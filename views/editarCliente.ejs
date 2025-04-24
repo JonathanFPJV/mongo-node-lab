@@ -1,0 +1,38 @@
+<!-- views/editarCliente.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Editar Cliente</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+  <h1 class="text-3xl font-bold text-center mb-6">Editar Cliente</h1>
+
+  <form action="/clientes/actualizar/<%= cliente._id %>" method="POST" class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <div class="mb-4">
+      <label class="block font-semibold">Nombre</label>
+      <input type="text" name="nombre" value="<%= cliente.nombre %>" class="w-full border rounded p-2" required>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Correo</label>
+      <input type="email" name="correo" value="<%= cliente.correo %>" class="w-full border rounded p-2" required>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Edad</label>
+      <input type="number" name="edad" value="<%= cliente.edad %>" class="w-full border rounded p-2" required>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Ciudad</label>
+      <input type="text" name="ciudad" value="<%= cliente.ciudad %>" class="w-full border rounded p-2" required>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Guardar Cambios</button>
+    </div>
+  </form>
+</body>
+</html>

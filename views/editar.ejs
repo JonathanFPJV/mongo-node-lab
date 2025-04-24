@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Producto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-3xl font-bold mb-6 text-center">Editar Producto</h1>
+
+  <form action="/editar/<%= producto._id %>" method="POST" class="max-w-xl mx-auto bg-white p-6 rounded shadow grid gap-4">
+    <input name="nombre" value="<%= producto.nombre %>" class="border p-2 rounded" required />
+    <input name="precio" type="number" value="<%= producto.precio %>" class="border p-2 rounded" required />
+    <input name="stock" type="number" value="<%= producto.stock %>" class="border p-2 rounded" required />
+    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Guardar Cambios</button>
+    <a href="/" class="text-center text-blue-600 hover:underline">Cancelar</a>
+  </form>
+</body>
+</html>

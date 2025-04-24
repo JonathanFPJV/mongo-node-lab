@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  app:
+    build: .
+    container_name: node-app
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/miBaseDeDatos
+    networks:
+      - app-network
+    volumes:
+      - .:/app
+
+volumes:
+  mongo_data:
+
+networks:
+  app-network:

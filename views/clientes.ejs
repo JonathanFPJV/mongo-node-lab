@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= titulo %></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+  <!-- Cabecera -->
+  <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"><%= titulo %></h1>
+
+  <!-- Botón para agregar un cliente -->
+  <div class="text-center mb-6">
+    <a href="/clientes/crear" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Agregar Cliente</a>
+  </div>
+
+  <!-- Listado de Clientes -->
+  <ul class="max-w-4xl mx-auto space-y-3">
+    <% clientes.forEach(c => { %>
+      <li class="bg-white p-4 shadow rounded flex justify-between items-center">
+        <div>
+          <p class="font-semibold text-lg">Nombre: <%= c.nombre %></p>
+          <p class="text-gray-600">Correo: <%= c.correo %></p>
+        </div>
+        
+        <!-- Acciones (Editar y Eliminar) -->
+        <div class="space-x-3">
+          <a href="/clientes/actualizar/<%= c._id %>" class="text-blue-500 hover:text-blue-700">Editar</a> |
+          <a href="/clientes/eliminar/<%= c._id %>" class="text-red-500 hover:text-red-700">Eliminar</a>
+        </div>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>

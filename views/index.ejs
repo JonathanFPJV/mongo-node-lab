@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-3xl font-bold mb-6 text-center">Lista de Productos</h1>
+
+  <form action="/crear" method="POST" class="grid grid-cols-3 gap-4 bg-white p-4 rounded shadow mb-6">
+    <input name="nombre" placeholder="Nombre" class="border p-2 rounded" required />
+    <input name="precio" type="number" placeholder="Precio" class="border p-2 rounded" required />
+    <input name="stock" type="number" placeholder="Stock" class="border p-2 rounded" required />
+    <button type="submit" class="col-span-3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Agregar Producto</button>
+  </form>
+
+  <div class="grid gap-4">
+    <% productos.forEach(p => { %>
+      <div class="bg-white p-4 rounded shadow flex justify-between items-center">
+        <div>
+          <p class="font-semibold"><%= p.nombre %></p>
+          <p>Precio: S/.<%= p.precio %> | Stock: <%= p.stock %></p>
+        </div>
+        <form action="/eliminar" method="POST" class="flex gap-2">
+          <input type="hidden" name="id" value="<%= p._id %>">
+          <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Eliminar</button>
+        </form>
+        <a href="/editar/<%= p._id %>" class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">Editar</a>
+      </div>
+    <% }) %>
+  </div>
+</body>
+</html>
