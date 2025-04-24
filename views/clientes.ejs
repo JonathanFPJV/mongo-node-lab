@@ -6,30 +6,83 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="p-6 bg-gray-100">
-  <!-- Cabecera -->
   <h1 class="text-3xl font-bold mb-6 text-center text-gray-800"><%= titulo %></h1>
 
-  <!-- Botón para agregar un cliente -->
   <div class="text-center mb-6">
     <a href="/clientes/crear" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Agregar Cliente</a>
+    <button onclick="document.getElementById('modalTodos').showModal()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 ml-2">Cambiar ciudad por grupo</button>
   </div>
 
-  <!-- Listado de Clientes -->
   <ul class="max-w-4xl mx-auto space-y-3">
     <% clientes.forEach(c => { %>
       <li class="bg-white p-4 shadow rounded flex justify-between items-center">
         <div>
           <p class="font-semibold text-lg">Nombre: <%= c.nombre %></p>
           <p class="text-gray-600">Correo: <%= c.correo %></p>
+          <p class="text-gray-600">Ciudad: <%= c.ciudad %></p>
         </div>
-        
-        <!-- Acciones (Editar y Eliminar) -->
         <div class="space-x-3">
           <a href="/clientes/actualizar/<%= c._id %>" class="text-blue-500 hover:text-blue-700">Editar</a> |
-          <a href="/clientes/eliminar/<%= c._id %>" class="text-red-500 hover:text-red-700">Eliminar</a>
+          <a href="/clientes/eliminar/<%= c._id %>" class="text-red-500 hover:text-red-700">Eliminar</a> |
+          <button onclick="abrirModal('<%= c._id %>', '<%= c.ciudad %>')" class="text-green-500 hover:text-green-700">Editar ciudad</button>
         </div>
       </li>
     <% }) %>
   </ul>
+
+  <!-- Modal Individual -->
+  <dialog id="modalIndividual" class="rounded-lg p-6 w-96">
+    <form method="POST" id="formActualizarCiudad" class="flex flex-col gap-4">
+      <h2 class="text-xl font-bold">Actualizar Ciudad</h2>
+      <input type="hidden" name="id" id="clienteId">
+      <input type="text" name="nuevaCiudad" id="nuevaCiudad" placeholder="Nueva ciudad" class="p-2 border rounded" required>
+      <div class="text-right">
+        <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Actualizar</button>
+        <button type="button" onclick="document.getElementById('modalIndividual').close()" class="ml-2 text-gray-500">Cancelar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Modal Masivo -->
+  <dialog id="modalTodos" class="rounded-lg p-6 w-96">
+    <form method="POST" action="/clientes/actualizar-todos" class="flex flex-col gap-4">
+      <h2 class="text-xl font-bold">Actualizar ciudad a todos</h2>
+      <select name="ciudadActual" class="p-2 border rounded" required>
+        <% 
+          const ciudades = [...new Set(clientes.map(c => c.ciudad))];
+          ciudades.forEach(ciudad => { 
+        %>
+          <option value="<%= ciudad %>"><%= ciudad %></option>
+        <% }) %>
+      </select>
+      <input type="text" name="nuevaCiudad" placeholder="Nueva ciudad" class="p-2 border rounded" required>
+      <div class="text-right">
+        <button type="submit" class="bg-purple-600 text-white px-4 py-1 rounded">Actualizar Todos</button>
+        <button type="button" onclick="document.getElementById('modalTodos').close()" class="ml-2 text-gray-500">Cancelar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    function abrirModal(id, ciudad) {
+      document.getElementById('clienteId').value = id;
+      document.getElementById('nuevaCiudad').value = ciudad;
+      document.getElementById('modalIndividual').showModal();
+    }
+
+    document.getElementById('formActualizarCiudad').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('clienteId').value;
+      const ciudad = document.getElementById('nuevaCiudad').value;
+
+      await fetch(`/clientes/actualizar-ciudad/${id}`, {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ciudad }),
+      });
+
+      window.location.reload();
+    });
+  </script>
 </body>
 </html>

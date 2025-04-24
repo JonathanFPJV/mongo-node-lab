@@ -69,6 +69,32 @@ router.get("/eliminar/:id", async (req, res) => {
     await db.collection("clientes").deleteOne({ _id: new ObjectId(req.params.id) });
     res.redirect("/clientes");
 });
+
+// Actualizar solo la ciudad de un cliente por ID
+router.post("/actualizar-ciudad/:id", async (req, res) => {
+    const db = await connectDB();
+    const { ciudad } = req.body;
+  
+    await db.collection("clientes").updateOne(
+      { _id: new ObjectId(req.params.id) },
+      { $set: { ciudad } }
+    );
+  
+    res.json({ success: true });
+});
+  
+// Actualizar ciudad para todos los que viven en una ciudad específica
+router.post("/clientes/actualizar-todos", async (req, res) => {
+    const db = await connectDB();
+    const { ciudadActual, nuevaCiudad } = req.body;
+  
+    await db.collection("clientes").updateMany(
+      { ciudad: ciudadActual },
+      { $set: { ciudad: nuevaCiudad } }
+    );
+  
+    res.redirect("/clientes");
+});
   
   
 module.exports = router;
