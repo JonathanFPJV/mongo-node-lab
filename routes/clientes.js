@@ -9,16 +9,29 @@ router.get("/crear", (req, res) => {
 });
   
   
-// Clientes mayores de 30 años, mostrando solo nombre y correo
-router.get("/mayores", async (req, res) => {
-  const db = await connectDB();
-  const clientes = await db
-    .collection("clientes")
-    .find({ edad: { $gt: 30 } }, { projection: { nombre: 1, correo: 1, _id: 0 } })
-    .toArray();
-
-  res.render("clientes", { clientes, titulo: "Clientes mayores de 30" });
+router.get('/filtro-edad', async (req, res) => {
+    const minEdad = parseInt(req.query.minEdad);
+  
+    try {
+      const db = await connectDB();
+      const clientes = await db.collection("clientes")
+        .find(
+          { edad: { $gt: minEdad } },
+          { projection: { nombre: 1, correo: 1, ciudad: 1, edad: 1 } }
+        )
+        .toArray();
+  
+      res.render('clientes', {
+        titulo: `Clientes mayores de ${minEdad} años`,
+        clientes
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error al obtener los clientes filtrados');
+    }
 });
+  
+  
 
 // Ruta para procesar la creación de un cliente
 router.post("/crear", async (req, res) => {
