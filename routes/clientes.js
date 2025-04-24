@@ -84,7 +84,7 @@ router.post("/actualizar-ciudad/:id", async (req, res) => {
 });
   
 // Actualizar ciudad para todos los que viven en una ciudad específica
-router.post("/clientes/actualizar-todos", async (req, res) => {
+router.post("/actualizar-todos", async (req, res) => {
     const db = await connectDB();
     const { ciudadActual, nuevaCiudad } = req.body;
   
