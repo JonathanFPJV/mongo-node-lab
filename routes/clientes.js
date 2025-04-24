@@ -95,6 +95,15 @@ router.post("/actualizar-todos", async (req, res) => {
   
     res.redirect("/clientes");
 });
+
+// Eliminar todos los clientes de una ciudad específica
+router.post("/eliminar-todos", async (req, res) => {
+    const db = await connectDB();
+    const { ciudad } = req.body;
+  
+    await db.collection("clientes").deleteMany({ ciudad });
+    res.redirect("/clientes");
+  });
   
   
 module.exports = router;
